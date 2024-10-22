@@ -16,37 +16,29 @@
 
 package net.fabricmc.fabric.api.entity.event.client;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.network.ClientPlayerEntity;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
 public final class ClientPlayerEvents {
-	/*
-	 * Flag for using default slowdown during using an item.
-	 */
-	public static final float USE_DEFAULT_SLOWDOWN_SPEED = -1.0F;
-
-	/*
-	 * Default percentage of speed slowdown when using an item in Minecraft.
-	 */
-	private static final float DEFAULT_SLOWDOWN_SPEED = 0.2F;
-
 	/**
 	 * An event that is called when a player is moving during using an item.
 	 */
 	public static final Event<AdjustUsingItemSpeed> ADJUST_USING_ITEM_SPEED = EventFactory.createArrayBacked(AdjustUsingItemSpeed.class, callbacks -> player -> {
-		float maxSpeed = USE_DEFAULT_SLOWDOWN_SPEED;
+		Float maxSpeedPercentage = null;
 
 		for (AdjustUsingItemSpeed callback : callbacks) {
-			float currentSpeed = callback.adjustUsingItemSpeed(player);
+			Float speedPercentage = callback.adjustUsingItemSpeed(player);
 
-			if (currentSpeed >= 0.0F && currentSpeed <= 1.0F) {
-				maxSpeed = currentSpeed > maxSpeed ? currentSpeed : maxSpeed;
+			if (speedPercentage != null && speedPercentage >= 0.0F && speedPercentage <= 1.0F) {
+				maxSpeedPercentage = maxSpeedPercentage == null ? speedPercentage : Math.max(speedPercentage, maxSpeedPercentage);
 			}
 		}
 
-		return maxSpeed == USE_DEFAULT_SLOWDOWN_SPEED ? DEFAULT_SLOWDOWN_SPEED : maxSpeed;
+		return maxSpeedPercentage;
 	});
 
 	@FunctionalInterface
@@ -55,9 +47,10 @@ public final class ClientPlayerEvents {
 		 * Called when a player is moving during using an item.
 		 *
 		 * @param player the player is moving during using an item.
-		 * @return the percentage of the player's speed from 0.0F to 1.0F.
-		 * Return {@link #USE_DEFAULT_SLOWDOWN_SPEED} indicates that no adjustment should be applied.
+		 * @return the percentage of player's speed from 0.0F to 1.0F,
+		 * or {@code null} indicates that no adjustment should be applied.
 		 */
-		float adjustUsingItemSpeed(ClientPlayerEntity player);
+		@Nullable
+		Float adjustUsingItemSpeed(ClientPlayerEntity player);
 	}
 }

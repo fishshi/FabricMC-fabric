@@ -47,7 +47,7 @@ public class EntityEventTestsClient implements ClientModInitializer {
 				return 0.0F;
 			}
 
-			return ClientPlayerEvents.USE_DEFAULT_SLOWDOWN_SPEED;
+			return null;
 		});
 
 		ClientPlayerEvents.ADJUST_USING_ITEM_SPEED.register(player -> {
@@ -56,7 +56,7 @@ public class EntityEventTestsClient implements ClientModInitializer {
 				return 0.5F;
 			}
 
-			return ClientPlayerEvents.USE_DEFAULT_SLOWDOWN_SPEED;
+			return null;
 		});
 	}
 }
