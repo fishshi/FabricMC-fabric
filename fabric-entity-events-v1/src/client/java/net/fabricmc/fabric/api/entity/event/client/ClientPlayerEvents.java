@@ -33,7 +33,7 @@ public final class ClientPlayerEvents {
 		for (AdjustUsingItemSpeed callback : callbacks) {
 			Float speedPercentage = callback.adjustUsingItemSpeed(player);
 
-			if (speedPercentage != null && speedPercentage >= 0.0F && speedPercentage <= 1.0F) {
+			if (speedPercentage != null) {
 				maxSpeedPercentage = maxSpeedPercentage == null ? speedPercentage : Math.max(speedPercentage, maxSpeedPercentage);
 			}
 		}
@@ -47,7 +47,7 @@ public final class ClientPlayerEvents {
 		 * Called when a player is moving during using an item.
 		 *
 		 * @param player the player is moving during using an item.
-		 * @return the percentage of player's speed from 0.0F to 1.0F,
+		 * @return a Float representing the speed adjustment as a percentage (e.g., 0.8 for 80% speed),
 		 * or {@code null} indicates that no adjustment should be applied.
 		 */
 		@Nullable
