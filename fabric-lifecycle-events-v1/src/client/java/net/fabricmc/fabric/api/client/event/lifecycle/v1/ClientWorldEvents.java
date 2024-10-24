@@ -24,7 +24,10 @@ import net.minecraft.client.world.ClientWorld;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 
-public class ClientWorldEvents {
+public final class ClientWorldEvents {
+	private ClientWorldEvents() {
+	}
+
 	/**
 	 * An event which is called after the client world has been changed.
 	 */
